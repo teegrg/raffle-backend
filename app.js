@@ -1,21 +1,27 @@
 //DEPENDENCIES
 const cors = require('cors');
 const express = require('express');
-const {CLIENT_URL} = require('./index.js')
 
 //CONFIGURATION
 const app = express();
 
 
 //MIDDLEWARE
-app.use(cors({origin:CLIENT_URL, credentials:true}));
+app.use(cors());
 app.use(express.json());
 
 
-//ROUTES
+//ROUTES HEALTH CHECKUP
 app.get('/', (req, res) => {
-    res.send("Welcome");
+    res.status(200).json({ data: "Service is running" });
 })
+
+//CONTROLLER ROUTE
+const userController = require('./controllers/usersController.js')
+app.use('/api/participants', userController)
+
+const raffleController = require('./controllers/rafflesController.js');
+app.use('/api/raffles', raffleController)
 
 //404 ROUTE
 app.get("*", (req, res) => {
