@@ -3,7 +3,7 @@ CREATE DATABASE raffle;
 
 \c raffle;
 
-DROP TABLE IS EXISTS  users;
+DROP TABLE IF EXISTS  users;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -11,12 +11,22 @@ CREATE TABLE users (
     last_name VARCHAR(250) NOT NULL,
     email VARCHAR(250) NOT NULL,
     phone TEXT, 
-    registar_date TIMESTAMPTZ
+    created_at TIMESTAMPTZ 
 );
 
-CREATE TABLE secretKey (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users (id),
-    key VARCHAR(200)
-)
+DROP TABLE IF EXISTS  raffles;
 
+CREATE TABLE raffles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(250),
+    user_id INTEGER REFERENCES users (id),
+    created_at TIMESTAMPTZ,
+    key VARCHAR(200)
+);
+
+DROP TABLE IF EXISTS winner;
+
+CREATE TABLE winner (
+    id SERIAL PRIMARY KEY,
+    winner_id INTEGER REFERENCES raffles(id)
+);
