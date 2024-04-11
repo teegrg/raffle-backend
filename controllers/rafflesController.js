@@ -10,6 +10,12 @@ const {
     createRaffle,
 } = require('../queries/raffles');
 
+const {
+    validId,
+    idExist,
+    validInput
+} = require('../Middleware/middleware');
+
 raffles.get('/', async (req, res) => {
     try{
         const allRaffles = await getAllRaffles();
@@ -29,7 +35,7 @@ raffles.post(`/`, async (req, res) => {
     }
 })
 
-raffles.get('/:id', async (req, res) => {
+raffles.get('/:id', validId, idExist, async (req, res) => {
     try{
         const { id } = req.params;
         const oneRaffle = await getRaffle(id);
@@ -39,7 +45,7 @@ raffles.get('/:id', async (req, res) => {
     }
 });
 
-raffles.get('/:id/participants', async (req, res) => {
+raffles.get('/:id/participants', validId, idExist, async (req, res) => {
     try{
         const { id } = req.params;
         const allParticipants = await getAllParticipants(id);
@@ -50,7 +56,7 @@ raffles.get('/:id/participants', async (req, res) => {
 });
 
 
-raffles.post('/:id/participants', async (req, res) => {
+raffles.post('/:id/participants',validId, idExist, validInput, async (req, res) => {
     try {
         const { first_name, last_name, email, phone } = req.body;
         const newParticipant = await createParticipant({ first_name, last_name, email, phone });
@@ -60,7 +66,7 @@ raffles.post('/:id/participants', async (req, res) => {
     }
 });
 
-raffles.get('/:id/winner', async (req, res) => {
+raffles.get('/:id/winner',validId, idExist, async (req, res) => {
     try {
         const { id } = req.params;
         const oneWinner = await getWinner(id);
