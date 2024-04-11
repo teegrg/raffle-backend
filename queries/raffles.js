@@ -7,12 +7,12 @@ const getAllRaffles = async () => {
 
 //ONE RAFFLE
 const getRaffle = async (id) => {
-    return await db.one(`SELECT * FROM raffles WHERE id=$1;`,id);
+    return await db.oneOrNone(`SELECT * FROM raffles WHERE id=$1;`,id);
 }
 
 //POST RAFFLE
 const createRaffle = async (raffle) => {
-    return await db.one(`
+    return await db.oneOrNone(`
         INSERT INTO raffles (name, key, created_at) 
         VALUES 
         ($1, $2, CURRENT_TIMESTAMP)
@@ -41,7 +41,7 @@ const getAllParticipants = async (id) => {
 
 //CREATE PARTICIPANTS
 const createParticipant = async (user) => {
-    return await db.one(
+    return await db.oneOrNone(
         `INSERT INTO
              users (first_name, last_name, email, phone, created_at) 
          VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) 
@@ -53,7 +53,7 @@ const createParticipant = async (user) => {
 
 //GET WINNER
 const getWinner = async (id) => {
-    return await db.one(`SELECT * FROM winner;`, id);
+    return await db.any(`SELECT * FROM winner;`, id);
 }
 
 module.exports = {
