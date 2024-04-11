@@ -53,7 +53,7 @@ const createParticipant = async (user) => {
 
 //GET WINNER
 const getWinner = async (id) => {
-    return await db.any(`SELECT * FROM winner;`, id);
+    return await db.any(`SELECT * FROM winner WHERE id=$1;`, id);
 }
 
 module.exports = {
