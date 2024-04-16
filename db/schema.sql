@@ -26,14 +26,3 @@ CREATE TABLE users (
     raffle_id INTEGER REFERENCES raffles (id),
     created_at TIMESTAMPTZ 
 );
-
-
-
-DROP TABLE IF EXISTS winner;
-
-CREATE TABLE winner (
-    id SERIAL PRIMARY KEY,
-    raffle_id INTEGER REFERENCES raffles(id),
-    created_at TIMESTAMPTZ,
-    winner_id VARCHAR(20)
-);
