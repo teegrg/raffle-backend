@@ -8,6 +8,7 @@ const {
     createParticipant,
     getWinner,
     createRaffle,
+    updateRaffle,
 } = require('../queries/raffles');
 
 const {
@@ -45,6 +46,18 @@ raffles.get('/:id', validId, idExist, async (req, res) => {
     }
 });
 
+raffles.put('/:id', validId, idExist, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {winner_id, raffled_on } = req.body; 
+        const updatedRaffle = await updateRaffle(id, winner_id, raffled_on); 
+        res.status(200).json({ data: updatedRaffle });
+    } catch(err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 raffles.get('/:id/participants', validId, idExist, async (req, res) => {
     try{
         const { id } = req.params;
@@ -55,16 +68,16 @@ raffles.get('/:id/participants', validId, idExist, async (req, res) => {
     }
 });
 
-
-raffles.post('/:id/participants',validId, idExist, validInput, async (req, res) => {
+raffles.post('/:id/participants', validId, idExist, validInput, async (req, res) => {
     try {
-        const { first_name, last_name, email, phone } = req.body;
-        const newParticipant = await createParticipant({ first_name, last_name, email, phone });
+        const { first_name, last_name, email, phone, raffle_id } = req.body;
+        const newParticipant = await createParticipant({ first_name, last_name, email, phone, raffle_id});
         res.status(201).json({ data: newParticipant });
     } catch(err) {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 raffles.get('/:id/winner',validId, idExist, async (req, res) => {
     try {
