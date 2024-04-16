@@ -15,7 +15,7 @@ const idExist = async (req, res, next) => {
   const { id } = req.params;
   const raffle = await getRaffle(id);
   if (!raffle) {
-    return res.status(404).json({ error: `id param ${id} doesnot exist;` });
+    return res.status(400).json({ error: `id param ${id} doesnot exist;` });
   } else {
     next();
   }
@@ -42,7 +42,7 @@ const validInput = (req, res, next) => {
     }
 
    for(let field in registar){
-    if(field !== "phone" && !registar_input_field.includes(field)){
+    if(field !== "phone" && field !== "raffle_id" && !registar_input_field.includes(field)){
         return res.status(400).json({ error: `${field} is not allowed. Please fill in the only required fields.`})
     }
    } 
